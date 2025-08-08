@@ -1,18 +1,18 @@
 from typing import Optional
 
+from src.utils.client import HTMLClient
 from src.clients.product import ProductClient
 from src.enums.kasta import URLEnum
 
 
-class KastaClient(ProductClient):
+class KastaClient(ProductClient, HTMLClient):
     def __init__(self):
         super().__init__(
-            base_url=URLEnum.BASE.value,
-            URLEnum=URLEnum
+            base_url=URLEnum.BASE.value
         )
         
     async def get_products(self) -> list[dict]:
-        pass
+        return []
     
     async def get_product(self) -> Optional[dict]:
-        pass
+        return None

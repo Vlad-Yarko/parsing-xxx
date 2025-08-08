@@ -14,7 +14,7 @@ class HTTPClient(Client):
         params: Optional[dict] = None,
         payload: Optional[dict] = None
         ):
-        self.session = None
+        self.session: ClientSession
         self.base_url = base_url
         self.endpoint = endpoint
         self.params = params

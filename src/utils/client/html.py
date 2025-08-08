@@ -1,9 +1,9 @@
 from typing import Optional
 
-from src.utils.client.client import Client
+from src.utils.client.http import HTTPClient
 
 
-class HTMLClient(Client):
+class HTMLClient(HTTPClient):
     def __init__(
         self, 
         base_url: str, 

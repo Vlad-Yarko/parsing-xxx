@@ -8,4 +8,5 @@ dependencies = [
     "aiohttp>=3.12.15",
     "bs4>=0.0.2",
     "lxml>=6.0.0",
+    "playwright>=1.54.0",
 ]

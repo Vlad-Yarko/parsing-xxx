@@ -1,0 +1,30 @@
+# Browser Manager Structure (Is not good for production)
+
+
+
+
+┌────────────────┐ ┌────────────────┐ ┌────────────────┐
+│      OLX       │ │     Shafa      │ │     Kasta      │
+└───────┬────────┘ └───────┬────────┘ └───────┬────────┘
+        │                  │                  │
+  ┌─────▼─────┐      ┌─────▼─────┐      ┌─────▼─────┐
+  │BrowserClnt│      │BrowserClnt│      │BrowserClnt│
+  └─────┬─────┘      └─────┬─────┘      └─────┬─────┘
+     ┌──┼───┐          ┌───┼───┐          ┌───┼───┐
+     ▼   ▼   ▼         ▼   ▼   ▼          ▼   ▼   ▼
+┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+│Browser #1││Browser #2││Browser #3││Browser #1││Browser #2││Browser #3│
+└───┬──────┘└───┬──────┘└───┬──────┘└───┬──────┘└───┬──────┘└───┬──────┘
+    │           │           │           │           │           │
+Ctx1: 50    Ctx1: 50    Ctx1: 50    Ctx1: 50    Ctx1: 50    Ctx1: 50
+Ctx2: 50    Ctx2: 50    Ctx2: 50    Ctx2: 50    Ctx2: 50    Ctx2: 50
+Ctx3: 50    Ctx3: 50    Ctx3: 50    Ctx3: 50    Ctx3: 50    Ctx3: 50
+Ctx4: 50    Ctx4: 50    Ctx4: 50    Ctx4: 50    Ctx4: 50    Ctx4: 50
+Ctx5: 50    Ctx5: 50    Ctx5: 50    Ctx5: 50    Ctx5: 50    Ctx5: 50
+
+
+
+
+### Legend:
+BrowserClnt - Broswer Client
+Ctx - Browser Context entity

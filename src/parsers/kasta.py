@@ -1,9 +1,12 @@
 from src.parsers.product import ProductParser
-from src.sequences import KastaSequence
+from src.sequences import ProductSequence
 
 
 class KastaParser(ProductParser):
-    def __init__(self):
+    def __init__(
+        self,
+        kasta_sequence: ProductSequence
+        ):
         super().__init__(
-            sequence=KastaSequence()
+            sequence=kasta_sequence
         )

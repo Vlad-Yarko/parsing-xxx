@@ -1,10 +1,10 @@
 from typing import Optional, Union
 
-from src.utils.client.client import Client
+from src.utils.client.http import HTTPClient
 
 
 
-class JSONClient(Client):
+class JSONClient(HTTPClient):
     def __init__(
         self, 
         base_url: str, 

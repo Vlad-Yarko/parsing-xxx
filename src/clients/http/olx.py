@@ -1,16 +1,17 @@
 from typing import Union
 from enum import Enum
 
+from src.utils.client import HTMLClient
 from src.clients.product import ProductClient
 from src.enums.olx import URLEnum
 
 
-class OLXClient(ProductClient):
+class OLXClient(ProductClient, HTMLClient):
     def __init__(self):
         super().__init__(
-            base_url=URLEnum.BASE.value,
-            URLEnum=URLEnum
+            base_url=URLEnum.BASE.value
         )
+        self.URLEnum = URLEnum
         
     async def get_products(self, product: str, **filters: Union[str, Enum]) -> str:
         self.endpoint = self.URLEnum.PRODUCTS.value + product

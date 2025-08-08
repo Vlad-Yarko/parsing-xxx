@@ -11,9 +11,6 @@ class ProductParser(Parser):
         self,
         sequence: ProductSequence
         ):
-        super().__init__(
-            
-        )
         self.sequence = sequence
     
     def get_products(self, html: str) -> list[dict]:
