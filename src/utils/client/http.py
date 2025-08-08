@@ -7,6 +7,8 @@ from src.utils.client.client import Client
 
 
 class HTTPClient(Client):
+    client_type = "http"
+    
     def __init__(
         self, 
         base_url: str, 
@@ -44,15 +46,15 @@ class HTTPClient(Client):
         return response
 
 
-def http_session(func):
-    @wraps(func)
-    async def wrapper(self, *args, **kwargs):
-        session_was_already_open = self.client.session is not None and not self.client.session.closed
-        if not session_was_already_open:
-            await self.client.open_session()
-        try:
-            return await func(self, *args, **kwargs)
-        finally:
-            if not session_was_already_open:
-                await self.client.close_session()
-    return wrapper
+# def http_session(func):
+#     @wraps(func)
+#     async def wrapper(self, *args, **kwargs):
+#         session_was_already_open = self.client.session is not None and not self.client.session.closed
+#         if not session_was_already_open:
+#             await self.client.open_session()
+#         try:
+#             return await func(self, *args, **kwargs)
+#         finally:
+#             if not session_was_already_open:
+#                 await self.client.close_session()
+#     return wrapper

@@ -1,70 +1,68 @@
-from tkinter import N
+import os
 from typing import Optional
-from functools import wraps
 
-from playwright.async_api import async_playwright, Browser
+from playwright.async_api import Playwright, Page, BrowserContext, Browser
 
 from src.utils.client.client import Client
-from src.constants.client import BROWSER_CLIENT_STORAGE, BROWSER_CLIENT_TRACING
+from src.utils.browser_manager import browser_manager
+from src.constants.client import BROWSER_CLIENT_STORAGE
 
 
 class BrowserClient(Client):
+    client_type = "browser"
+    
     def __init__(
         self,
+        p: Playwright,
+        browser_quantity: int,
+        context_amount_per_one_b: int,
+        page_amount_pew_one_c: int,
         headless: bool = True,
         context_page_url: Optional[str] = None,
         context_file_name: str = "",
         device_name: str = "Desktop Chrome",
         tracing_file_name: str = ""
         ):
-        self.browser: Browser
+        self.p = p
+        self.browser_quantity = browser_quantity
+        self.context_amount_per_one_b = context_amount_per_one_b
+        self.page_amount_pew_one_c = page_amount_pew_one_c
+        self.browser_manager = browser_manager
         self.headless = headless
-        self.context_page_url = context_page_url
-        self.device = None
         self.device_name = device_name
+        self.device = None
+        self.context_page_url = context_page_url
         self.context_file_name = context_file_name
         self.tracing_file_name = tracing_file_name
     
     async def open_session(self) -> None:
-        async with async_playwright() as p:
-            self.browser = await p.chromium.launch(headless=self.headless)
-            self.device = p.devices[self.device_name]
-            if self.cookie_page_url:
-                context = await self.browser.new_context(**self.device)
+        self.device = self.p.devices[self.device_name]
+        storage_path = BROWSER_CLIENT_STORAGE + self.context_file_name
+        for _ in range(self.browser_quantity):
+            browser = await self.p.chromium.launch(headless=self.headless)
+            self.browser_manager.browsers[browser] = dict()
+        if self.context_page_url and self.context_file_name:
+            if not os.path.exists(storage_path):
+                context = await self.browser_manager.browsers[0].new_context(**self.device)
                 page = await context.new_page()
-                await self.navigate(page, self.cookie_page_url)
-                await context.storage_state(path=)
+                await page.goto(self.context_page_url)
+                await context.storage_state(path=storage_path)
                 await context.close()
                 await page.close()
-        self.context = None
-        self.page = None
+        for browser in self.browser_manager.browsers:
+            for i in range(self.context_amount_per_one_b):
+                context = await browser.new_context(storage_state=storage_path, **self.device)
+                # context.tracing.start(screenshots=True, snapshots=True, sources=True)
+                self.browser_manager.browsers[context] = list()
                 
     async def close_session(self) -> None:
-        await self.context.tracing.stop(path=BROWSER_CLIENT_TRACING + self.tracing_name)
-        await self.page.close()
-        await self.context.close()
-        await self.browser.close()
-        self.context = None
-        self.page = None
-        self.browser = None
-    
-    async def navigate(
-        self, 
-        page, 
-        url: str, 
-        wait_until: str = "load") -> None:
-        await page.goto(url, wait_until=wait_until)
+        for browser in self.browser_manager.browsers:
+            await browser.close()
+        self.device = None
         
+    async def create_page(self) -> tuple[Page, BrowserContext, Browser]:
+        pass
     
-def browser_session(func):
-    @wraps(func)
-    async def wrapper(self, *args, **kwargs):
-        session_was_already_open = self.client.browser is not None
-        if not session_was_already_open:
-            await self.client.open_session()
-        try:
-            return await func(self, *args, **kwargs)
-        finally:
-            if not session_was_already_open:
-                await self.client.close_session()
-    return wrapper
+    async def close_page(self) -> None:
+        pass
+        

@@ -1,12 +1,11 @@
 from typing import Union
 from enum import Enum
 
-from src.utils.client import HTMLClient
-from src.clients.product import ProductClient
+from src.clients.http.product import ProductClientHTTP
 from src.enums.olx import URLEnum
 
 
-class OLXClient(ProductClient, HTMLClient):
+class OLXClient(ProductClientHTTP):
     def __init__(self):
         super().__init__(
             base_url=URLEnum.BASE.value

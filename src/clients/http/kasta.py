@@ -1,11 +1,10 @@
 from typing import Optional
 
-from src.utils.client import HTMLClient
-from src.clients.product import ProductClient
+from src.clients.http.product import ProductClientHTTP
 from src.enums.kasta import URLEnum
 
 
-class KastaClient(ProductClient, HTMLClient):
+class KastaClient(ProductClientHTTP):
     def __init__(self):
         super().__init__(
             base_url=URLEnum.BASE.value

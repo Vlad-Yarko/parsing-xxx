@@ -1,6 +1,10 @@
 # It is just example of working of services, but 
 
+# Need to be created like lifespan manager for serving playwright
+
 import asyncio
+
+from playwright.async_api import async_playwright
 
 from src import (
     OLXService,
@@ -11,14 +15,6 @@ from src.clients.browser import OLXClient
 from src.parsers import OLXParser
 from src.sequences import OLXSequence
 from src.utils.logger import logger
-
-
-olx_service = OLXService(
-    olx_client=OLXClient(),
-    olx_parser=OLXParser(olx_sequence=OLXSequence())
-)
-# shafa_service = ShafaService()
-# kasta_service = KastaService()
 
 
 OLX_PRODUCTS_MOCK = "кросівки"
@@ -32,6 +28,15 @@ KASTA_PRODUCT_MOCK = ""
 
 
 async def main() -> None:
+    p = await async_playwright().start()
+    
+    olx_service = OLXService(
+        olx_client=OLXClient(p),
+        olx_parser=OLXParser(olx_sequence=OLXSequence())
+    )
+    # shafa_service = ShafaService()
+    # kasta_service = KastaService()
+    
     olx_tasks = asyncio.gather(olx_service.get_products(OLX_PRODUCTS_MOCK)) # , olx_service.get_product(OLX_PRODUCT_MOCK)
     # shafa_tasks = asyncio.gather(shafa_service.get_products(SHAFA_PRODUCTS_MOCK)) # , shafa_service.get_product(SHAFA_PRODUCT_MOCK)
     # kasta_tasks = asyncio.gather(kasta_service.get_products(KASTA_PRODUCTS_MOCK), kasta_service.get_product(KASTA_PRODUCT_MOCK))
