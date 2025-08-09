@@ -12,7 +12,7 @@ class Parser:
         ):
         self.parse_engine = parse_engine
     
-    def parse_by_inheritance_group(self, html: str, sequence: str) -> list[Tag]:
+    def parse_group_by_inheritance(self, html: str, sequence: str) -> list[Tag]:
         soup = BeautifulSoup(html, self.parse_engine)
         elements = soup.select(sequence)
         return elements

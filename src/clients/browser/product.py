@@ -18,7 +18,7 @@ class ProductClientBrowser(ProductClient, BrowserClient):
             browser_quantity=3,
             context_amount_per_one_b=5,
             page_amount_pew_one_c=20,
-            headless=False,
+            headless=True, # False
             context_page_url=context_page_url,
             context_file_name=context_file_name
         )

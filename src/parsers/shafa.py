@@ -12,7 +12,7 @@ class ShafaParser(ProductParser):
         )
         
     def get_products(self, html: str) -> list[dict]:
-        parsed_data = self.parse_by_inheritance_group(html, self.sequence.products_window)[0]
+        parsed_data = self.parse_group_by_inheritance(html, self.sequence.products_window)[0]
         data = list()
         for tag in parsed_data:
             title = tag.select_one(self.sequence.products_title)

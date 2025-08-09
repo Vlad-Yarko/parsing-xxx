@@ -2,7 +2,7 @@ import enum
 
 
 class URLEnum(str, enum.Enum):
-    BASE = "https://shafa.ua/uk/"
-    PRODUCTS = "clothes"
-    PRODUCT = ""
+    BASE = "https://kasta.ua/"
+    PRODUCTS = "uk/search/"
+    PRODUCT = "uk/product/"
 

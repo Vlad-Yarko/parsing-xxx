@@ -22,7 +22,6 @@ class ShafaClient(ProductClientBrowser):
     async def get_products(self, product: str, **filters: Union[str, Enum]) -> str:
         page, context, browser = await self.create_page()
         await page.goto(url=URLEnum.BASE.value + URLEnum.PRODUCTS.value + f"?search_text={product}", timeout=60000, wait_until="networkidle")
-        # await page.wait_for_timeout(180000)
         content = await page.content()
         await self.close_page(browser, context, page)
         return content
