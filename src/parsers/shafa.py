@@ -5,8 +5,8 @@ from src.sequences import ProductSequence
 class ShafaParser(ProductParser):
     def __init__(
         self,
-        shafa_parser: ProductSequence
+        shafa_sequence: ProductSequence
         ):
         super().__init__(
-            sequence=shafa_parser
+            sequence=shafa_sequence
         )

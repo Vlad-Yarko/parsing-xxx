@@ -69,6 +69,7 @@ class BrowserClient(Client):
             for context, pages in self.browser_manager.browsers[browser].items():
                 if len(pages) < self.page_amount_pew_one_c:
                     page = await context.new_page()
+                    pages.append(page)
                     return page, context, browser
         return "" # Can be another actions
     
@@ -79,7 +80,7 @@ class BrowserClient(Client):
             page: Page
         ) -> None:
         contexts = self.browser_manager.browsers.get(browser)
-        pages = contexts.get(context) if context else contexts
+        pages = contexts.get(context) if contexts else contexts
         try:
             if pages:
                 await page.close()

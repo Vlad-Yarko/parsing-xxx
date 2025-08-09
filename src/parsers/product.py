@@ -30,10 +30,17 @@ class ProductParser(Parser):
         return data
     
     def get_product(self, html: str) -> Optional[dict]:
-        parsed_data = self.parse_one_by_inheritance(html, self.sequence.product_window)
-        if not parsed_data:
-            return None
-        data = dict()
-        data["title"] = parsed_data.select_one(self.sequence.product_title)
-        data["price"] = parsed_data.select_one(self.sequence.product_price)
-        return data
+        # parsed_data = self.parse_one_by_inheritance(html, self.sequence.product_window)
+        # if not parsed_data:
+        #     return None
+        # data = dict()
+        # data["title"] = parsed_data.select_one(self.sequence.product_title).text
+        # data["price"] = parsed_data.select_one(self.sequence.product_price).text
+        title = self.parse_one_by_inheritance(html, self.sequence.product_title)
+        price = self.parse_one_by_inheritance(html, self.sequence.product_price)
+        if title and price:
+            data = dict()
+            data["title"] = title.text
+            data["price"] = price.text
+            return data
+        return None

@@ -15,6 +15,7 @@ class Logger:
         self.level = logging.DEBUG
         self.filemode = 'a'
         self.format = '%(levelname)s---%(asctime)s---%(message)s---%(name)s'
+        self.encoding = "utf-8"
 
         with open(self.filename, 'w'):
             pass
@@ -24,7 +25,8 @@ class Logger:
             level=self.level,
             filename=self.filename,
             filemode=self.filemode,
-            format=self.format
+            format=self.format,
+            encoding=self.encoding
         )
         self.logger = logging
 
