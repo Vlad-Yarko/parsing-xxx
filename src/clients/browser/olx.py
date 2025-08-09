@@ -1,3 +1,6 @@
+from typing import Union
+from enum import Enum
+
 from playwright.async_api import Playwright
 
 from src.clients.browser.product import ProductClientBrowser
@@ -16,8 +19,13 @@ class OLXClient(ProductClientBrowser):
             context_file_name=CONTEXT_FILE_NAME
         )
     
-    async def get_products(self) -> str:
-        return ""
+    async def get_products(self, product: str, **filters: Union[str, Enum]) -> str:
+        page, context, browser = await self.create_page()
+        await page.goto(url=URLEnum.BASE.value + URLEnum.PRODUCTS.value + product, timeout=60000)
+        content = await page.content()
+        await self.close_page(browser, context, page)
+        return content
+        
     
     async def get_product(self) -> str:
         return ""

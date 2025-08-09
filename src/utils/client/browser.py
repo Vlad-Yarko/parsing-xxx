@@ -4,7 +4,7 @@ from typing import Optional
 from playwright.async_api import Playwright, Page, BrowserContext, Browser
 
 from src.utils.client.client import Client
-from src.utils.browser_manager import browser_manager
+from src.utils.browser_manager import BrowserManager
 from src.constants.client import BROWSER_CLIENT_STORAGE
 
 
@@ -27,7 +27,7 @@ class BrowserClient(Client):
         self.browser_quantity = browser_quantity
         self.context_amount_per_one_b = context_amount_per_one_b
         self.page_amount_pew_one_c = page_amount_pew_one_c
-        self.browser_manager = browser_manager
+        self.browser_manager = BrowserManager()
         self.headless = headless
         self.device_name = device_name
         self.device = None
@@ -43,9 +43,9 @@ class BrowserClient(Client):
             self.browser_manager.browsers[browser] = dict()
         if self.context_page_url and self.context_file_name:
             if not os.path.exists(storage_path):
-                context = await self.browser_manager.browsers[0].new_context(**self.device)
+                context = await browser.new_context(**self.device)
                 page = await context.new_page()
-                await page.goto(self.context_page_url)
+                await page.goto(self.context_page_url, timeout=60000)
                 await context.storage_state(path=storage_path)
                 await context.close()
                 await page.close()
@@ -53,16 +53,36 @@ class BrowserClient(Client):
             for i in range(self.context_amount_per_one_b):
                 context = await browser.new_context(storage_state=storage_path, **self.device)
                 # context.tracing.start(screenshots=True, snapshots=True, sources=True)
-                self.browser_manager.browsers[context] = list()
+                self.browser_manager.browsers[browser][context] = list()
                 
     async def close_session(self) -> None:
         for browser in self.browser_manager.browsers:
+            for context, pages in self.browser_manager.browsers[browser].items():
+                for page in pages:
+                    await page.close()
+                await context.close()
             await browser.close()
         self.device = None
         
     async def create_page(self) -> tuple[Page, BrowserContext, Browser]:
-        pass
+        for browser in self.browser_manager.browsers:
+            for context, pages in self.browser_manager.browsers[browser].items():
+                if len(pages) < self.page_amount_pew_one_c:
+                    page = await context.new_page()
+                    return page, context, browser
+        return "" # Can be another actions
     
-    async def close_page(self) -> None:
-        pass
-        
+    async def close_page(
+            self,
+            browser: Browser,
+            context: BrowserContext,
+            page: Page
+        ) -> None:
+        contexts = self.browser_manager.browsers.get(browser)
+        pages = contexts.get(context) if context else contexts
+        try:
+            if pages:
+                await page.close()
+                pages.remove(page)
+        except ValueError:
+            return None

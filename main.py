@@ -45,6 +45,8 @@ async def main() -> None:
     # shafa_result = await shafa_tasks
     # kasta_result = await kasta_tasks
     
+    await p.stop()
+    
     logger.info(f"OLX_PRODUCTS: {olx_result[0]}")
     # logger.info(f"OLX_PRODUCT: {olx_result[1]}")
     
