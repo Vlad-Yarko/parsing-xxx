@@ -21,7 +21,7 @@ OLX_PRODUCTS_MOCK = "кросівки"
 OLX_PRODUCT_MOCK = "krosvki-hoka-x-satisfy-clifton-ls-black-premium-IDXfEc2.html"
 
 SHAFA_PRODUCTS_MOCK = "кросівки"
-SHAFA_PRODUCT_MOCK = ""
+SHAFA_PRODUCT_MOCK = "uk/women/zhenskaya-obuv/krossovki/190295220-zhenskie-firmennye-krossovki-guess"
 
 KASTA_PRODUCTS_MOCK = ""
 KASTA_PRODUCT_MOCK = ""
@@ -34,10 +34,10 @@ async def main() -> None:
         olx_client=OLXClient(p),
         olx_parser=OLXParser(olx_sequence=OLXSequence())
     )
-    # shafa_service = ShafaService(
-    #     shafa_client=ShafaClient(p),
-    #     shafa_parser=ShafaParser(shafa_sequence=ShafaSequence())
-    # )
+    shafa_service = ShafaService(
+        shafa_client=ShafaClient(p),
+        shafa_parser=ShafaParser(shafa_sequence=ShafaSequence())
+    )
     # kasta_service = KastaService(
     #     kasta_client=KastaClient(p),
     #     kasta_parser=KastaParser(kasta_sequence=KastaSequence())
@@ -46,8 +46,8 @@ async def main() -> None:
     olx_result_products = await olx_service.get_products(OLX_PRODUCTS_MOCK)
     olx_result_product = await olx_service.get_product(OLX_PRODUCT_MOCK)
     
-    # shafa_result_products = await shafa_service.get_products(SHAFA_PRODUCTS_MOCK)
-    # shafa_result_product = await shafa_service.get_product(SHAFA_PRODUCT_MOCK)
+    shafa_result_products = await shafa_service.get_products(SHAFA_PRODUCTS_MOCK)
+    shafa_result_product = await shafa_service.get_product(SHAFA_PRODUCT_MOCK)
     
     # kasta_result_products = await kasta_service.get_products(KASTA_PRODUCTS_MOCK)
     # kasta_result_product = await kasta_service.get_product(KASTA_PRODUCT_MOCK)
@@ -55,8 +55,8 @@ async def main() -> None:
     logger.info(f"OLX_PRODUCTS: {olx_result_products}")
     logger.info(f"OLX_PRODUCT: {olx_result_product}")
     
-    # logger.info(f"SHAFA_PRODUCTS: {shafa_result_products}")
-    # logger.info(f"SHAFA_PRODUCT: {shafa_result_product}")
+    logger.info(f"SHAFA_PRODUCTS: {shafa_result_products}")
+    logger.info(f"SHAFA_PRODUCT: {shafa_result_product}")
     
     # logger.info(f"KASTA_PRODUCTS: {kasta_result_products}")
     # logger.info(f"KASTA_PRODUCT: {kasta_result_product}")

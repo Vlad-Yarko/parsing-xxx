@@ -1,7 +1,5 @@
 from typing import Optional
 
-import bs4
-
 from src.utils.parser import Parser
 from src.sequences import ProductSequence
 

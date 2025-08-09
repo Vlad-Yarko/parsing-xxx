@@ -25,7 +25,6 @@ class OLXClient(ProductClientBrowser):
         content = await page.content()
         await self.close_page(browser, context, page)
         return content
-        
     
     async def get_product(self, product: str) -> str:
         page, context, browser = await self.create_page()
